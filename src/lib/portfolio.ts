@@ -11,7 +11,7 @@
 //   totalPnlUsd    = totalCurrent - totalAllocated
 //   totalPnlPct    = ((totalCurrent / totalAllocated) - 1) * 100
 
-import type { PortfolioPosition } from "@/data/portfolio";
+import { priceKey, type PortfolioPosition } from "@/data/portfolio";
 import type { PriceData } from "@/lib/prices";
 
 export interface ComputedPosition extends PortfolioPosition {
@@ -44,7 +44,7 @@ export function computePortfolio(
   prices: PriceData,
 ): ComputedPortfolio {
   const computed: ComputedPosition[] = positions.map((p) => {
-    const entry = prices[p.coingeckoId];
+    const entry = prices[priceKey(p)];
     const currentPrice = entry?.usd ?? null;
     const change24h = entry?.usd_24h_change ?? null;
     const units = p.allocationUsd / p.entryPrice;

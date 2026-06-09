@@ -43,17 +43,25 @@ All content lives in typed config files under `src/data/`:
 
 - **`episodes.ts`** — add an episode by prepending an object. The first entry
   drives the homepage hero. Each needs `{ number, title, date, youtubeId, description, guests? }`.
-- **`portfolio.ts`** — add a position by appending an object. Prices are fetched
-  live from CoinGecko by `coingeckoId`; you set `entryDate`, `entryPrice`, and
-  `allocationUsd`.
+- **`portfolio.ts`** — add a position by appending an object. Set `assetType`
+  to `"crypto"` (priced via CoinGecko by `coingeckoId`) or `"stock"` (priced via
+  Yahoo Finance by `yahooSymbol`, e.g. `"TTWO"`). You set `entryDate`,
+  `entryPrice`, and `allocationUsd`; current price + 24h change are live.
 - **`sponsors.ts`** — sponsor grid + the stat strip.
 - **`site.ts`** — wordmark, tagline, social links, the endorsement quote.
 
 ## How prices work
 
-`src/lib/prices.ts` makes **one batched, server-side** call to CoinGecko, cached
-60 seconds via Next.js fetch revalidation. Never called from the client, never
-per-asset, no API key. If the call fails the table renders entry data with a
-"live prices temporarily unavailable" banner — never NaN, never a fake `$0.00`.
+`src/lib/prices.ts` fetches everything **server-side**, cached 60 seconds via
+Next.js fetch revalidation. Never called from the client, no API keys.
 
-The exact P&L formulas live in `src/lib/portfolio.ts`.
+- **Crypto** — one batched CoinGecko call for all crypto positions.
+- **Stocks** — one keyless Yahoo Finance chart call per symbol, run in parallel.
+
+Both feeds merge into a single map keyed by `priceKey()` (`crypto:<id>` /
+`stock:<symbol>`). If a feed fails, those positions render entry data and the
+page shows a "live prices temporarily unavailable" banner — never NaN, never a
+fake `$0.00`. The exact P&L formulas live in `src/lib/portfolio.ts`.
+
+> Deployment note: the hosting network policy must allow outbound requests to
+> both `api.coingecko.com` and `query1.finance.yahoo.com` for live prices.

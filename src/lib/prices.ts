@@ -1,10 +1,13 @@
-// Server-side CoinGecko integration. NEVER import this into a client component.
+// Server-side price integration. NEVER import this into a client component.
 //
-// One batched request fetches every position's price + 24h change in a single
-// call, cached for 60 seconds via Next.js fetch revalidation. This keeps us
-// far under the free tier's rate limits regardless of traffic.
+// Crypto: ONE batched CoinGecko request for all crypto positions.
+// Stocks: per-symbol Yahoo Finance chart requests (keyless), run in parallel.
+//
+// Everything is fetched server-side and cached 60s via Next.js fetch
+// revalidation, keeping us far under any rate limits regardless of traffic.
+// The merged map is keyed by `priceKey()` (e.g. "crypto:solana", "stock:TTWO").
 
-import { coingeckoIds, portfolio } from "@/data/portfolio";
+import { coingeckoIds, stockSymbols } from "@/data/portfolio";
 
 export interface PriceEntry {
   usd: number;
@@ -12,22 +15,15 @@ export interface PriceEntry {
   image?: string;
 }
 
-// Keyed by coingeckoId.
+// Keyed by priceKey(): "crypto:<id>" | "stock:<symbol>".
 export type PriceData = Record<string, PriceEntry>;
 
 export interface PriceResult {
   prices: PriceData;
-  // Epoch ms when the data was fetched; null when the feed failed.
+  // Epoch ms when the data was fetched; null when every feed failed.
   fetchedAt: number | null;
   ok: boolean;
 }
-
-// CoinGecko image URLs are stable and derived from the coin id list. We fetch
-// /coins/markets once to get logos; if it fails we degrade to no logos.
-const SIMPLE_PRICE_URL =
-  "https://api.coingecko.com/api/v3/simple/price" +
-  `?ids=${encodeURIComponent(coingeckoIds)}` +
-  "&vs_currencies=usd&include_24hr_change=true";
 
 const MARKETS_URL =
   "https://api.coingecko.com/api/v3/coins/markets" +
@@ -35,9 +31,10 @@ const MARKETS_URL =
   `&ids=${encodeURIComponent(coingeckoIds)}` +
   "&per_page=250&page=1&sparkline=false";
 
-interface SimplePriceResponse {
-  [id: string]: { usd?: number; usd_24h_change?: number };
-}
+const SIMPLE_PRICE_URL =
+  "https://api.coingecko.com/api/v3/simple/price" +
+  `?ids=${encodeURIComponent(coingeckoIds)}` +
+  "&vs_currencies=usd&include_24hr_change=true";
 
 interface MarketEntry {
   id: string;
@@ -46,31 +43,44 @@ interface MarketEntry {
   price_change_percentage_24h?: number;
 }
 
-export async function getPrices(): Promise<PriceResult> {
+interface SimplePriceResponse {
+  [id: string]: { usd?: number; usd_24h_change?: number };
+}
+
+interface YahooChartResponse {
+  chart?: {
+    result?: {
+      meta?: {
+        regularMarketPrice?: number;
+        chartPreviousClose?: number;
+        previousClose?: number;
+      };
+    }[];
+    error?: unknown;
+  };
+}
+
+// Single batched CoinGecko call. Returns a map keyed "crypto:<id>".
+async function getCryptoPrices(): Promise<PriceData> {
+  if (!coingeckoIds) return {};
   try {
-    // Prefer /coins/markets — it returns price, 24h change AND logo in one
-    // batched call, satisfying the "single batched request" rule while also
-    // giving us images. Fall back to /simple/price if markets is unavailable.
     const res = await fetch(MARKETS_URL, {
       next: { revalidate: 60 },
       headers: { Accept: "application/json" },
     });
-
     if (res.ok) {
       const data = (await res.json()) as MarketEntry[];
       const prices: PriceData = {};
       for (const entry of data) {
         if (typeof entry.current_price === "number") {
-          prices[entry.id] = {
+          prices[`crypto:${entry.id}`] = {
             usd: entry.current_price,
             usd_24h_change: entry.price_change_percentage_24h ?? 0,
             image: entry.image,
           };
         }
       }
-      if (Object.keys(prices).length > 0) {
-        return { prices, fetchedAt: Date.now(), ok: true };
-      }
+      if (Object.keys(prices).length > 0) return prices;
     }
 
     // Fallback: simple/price (no logos).
@@ -78,33 +88,83 @@ export async function getPrices(): Promise<PriceResult> {
       next: { revalidate: 60 },
       headers: { Accept: "application/json" },
     });
-    if (!fallback.ok) {
-      return emptyResult();
-    }
+    if (!fallback.ok) return {};
     const json = (await fallback.json()) as SimplePriceResponse;
     const prices: PriceData = {};
     for (const id of Object.keys(json)) {
       const v = json[id];
       if (typeof v.usd === "number") {
-        prices[id] = {
+        prices[`crypto:${id}`] = {
           usd: v.usd,
           usd_24h_change: v.usd_24h_change ?? 0,
         };
       }
     }
-    if (Object.keys(prices).length === 0) {
-      return emptyResult();
-    }
-    return { prices, fetchedAt: Date.now(), ok: true };
+    return prices;
   } catch {
-    // Network error, timeout, JSON parse failure — degrade gracefully.
-    return emptyResult();
+    return {};
   }
 }
 
-function emptyResult(): PriceResult {
-  return { prices: {}, fetchedAt: null, ok: false };
+// One keyless Yahoo Finance chart request per symbol. 24h change is derived
+// from the latest price vs the previous close. Returns "stock:<symbol>".
+async function getStockPrices(): Promise<PriceData> {
+  if (stockSymbols.length === 0) return {};
+
+  const results = await Promise.allSettled(
+    stockSymbols.map((symbol) => fetchYahooQuote(symbol)),
+  );
+
+  const prices: PriceData = {};
+  results.forEach((result, i) => {
+    if (result.status === "fulfilled" && result.value) {
+      prices[`stock:${stockSymbols[i]}`] = result.value;
+    }
+  });
+  return prices;
 }
 
-// Re-export so consumers can reference the canonical list.
-export { portfolio, coingeckoIds };
+async function fetchYahooQuote(symbol: string): Promise<PriceEntry | null> {
+  const url =
+    `https://query1.finance.yahoo.com/v8/finance/chart/${encodeURIComponent(symbol)}` +
+    "?interval=1d&range=1d";
+  try {
+    const res = await fetch(url, {
+      next: { revalidate: 60 },
+      headers: {
+        Accept: "application/json",
+        // Yahoo rejects requests without a UA.
+        "User-Agent": "Mozilla/5.0 (compatible; TWIC/1.0)",
+      },
+    });
+    if (!res.ok) return null;
+    const json = (await res.json()) as YahooChartResponse;
+    const meta = json.chart?.result?.[0]?.meta;
+    const price = meta?.regularMarketPrice;
+    if (typeof price !== "number") return null;
+    const prevClose = meta?.previousClose ?? meta?.chartPreviousClose;
+    const change24h =
+      typeof prevClose === "number" && prevClose > 0
+        ? (price / prevClose - 1) * 100
+        : 0;
+    return { usd: price, usd_24h_change: change24h };
+  } catch {
+    return null;
+  }
+}
+
+export async function getPrices(): Promise<PriceResult> {
+  const [crypto, stocks] = await Promise.all([
+    getCryptoPrices(),
+    getStockPrices(),
+  ]);
+
+  const prices: PriceData = { ...crypto, ...stocks };
+  const ok = Object.keys(prices).length > 0;
+
+  return {
+    prices,
+    fetchedAt: ok ? Date.now() : null,
+    ok,
+  };
+}

@@ -2,7 +2,7 @@ import Link from "next/link";
 import type { Metadata } from "next";
 import { SITE, ENDORSEMENT } from "@/data/site";
 import { episodesSorted, latestEpisode } from "@/data/episodes";
-import { portfolio } from "@/data/portfolio";
+import { portfolio, priceKey } from "@/data/portfolio";
 import { getPrices } from "@/lib/prices";
 import { YouTubeEmbed } from "@/components/YouTubeEmbed";
 import { EmailCapture } from "@/components/EmailCapture";
@@ -21,7 +21,7 @@ export default async function HomePage() {
   const { prices, ok } = await getPrices();
 
   const tickerItems: TickerItem[] = portfolio.map((p) => {
-    const entry = prices[p.coingeckoId];
+    const entry = prices[priceKey(p)];
     return {
       symbol: p.symbol,
       price: entry?.usd ?? null,
