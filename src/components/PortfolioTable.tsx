@@ -3,6 +3,7 @@
 import { useMemo, useState } from "react";
 import Image from "next/image";
 import type { ComputedPortfolio, ComputedPosition } from "@/lib/portfolio";
+import { priceKey } from "@/data/portfolio";
 import {
   formatUsd,
   formatSignedUsd,
@@ -116,7 +117,7 @@ export function PortfolioTable({ data }: PortfolioTableProps) {
           <tbody>
             {sorted.map((p) => (
               <tr
-                key={p.coingeckoId}
+                key={priceKey(p)}
                 className="border-b border-[#1a1a1a] transition-colors hover:bg-panel/50"
               >
                 <td className="px-3 py-4">
@@ -182,7 +183,7 @@ export function PortfolioTable({ data }: PortfolioTableProps) {
       {/* Mobile cards */}
       <ul className="space-y-3 md:hidden">
         {sorted.map((p) => (
-          <li key={p.coingeckoId} className="border border-[#2a2a2a] bg-panel p-4">
+          <li key={priceKey(p)} className="border border-[#2a2a2a] bg-panel p-4">
             <div className="flex items-center justify-between">
               <AssetCell position={p} />
               <div className="text-right font-mono text-lg font-bold tnum">
