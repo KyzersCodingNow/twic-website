@@ -257,8 +257,38 @@ function AssetCell({ position }: { position: ComputedPosition }) {
       <div className="leading-tight">
         <div className="font-semibold text-bone">{position.name}</div>
         <div className="font-mono text-xs text-muted">{position.symbol}</div>
+        <ThesisLink />
       </div>
     </div>
+  );
+}
+
+// Non-clickable link to a future thesis article. On hover (and keyboard focus)
+// it crossfades from "Read thesis →" to "Coming Soon" in place — the two labels
+// share one grid cell, so there's no layout shift and nothing to clip. A native
+// title + sr-only text keep it accessible.
+function ThesisLink() {
+  return (
+    <span
+      className="group/thesis mt-1 inline-grid cursor-not-allowed select-none align-middle font-mono text-[11px] uppercase tracking-wider"
+      title="Coming Soon"
+      aria-disabled="true"
+      tabIndex={0}
+    >
+      <span
+        aria-hidden="true"
+        className="col-start-1 row-start-1 text-muted underline decoration-dotted decoration-muted/50 underline-offset-2 transition-opacity duration-150 group-hover/thesis:opacity-0 group-focus/thesis:opacity-0"
+      >
+        Read thesis →
+      </span>
+      <span
+        aria-hidden="true"
+        className="col-start-1 row-start-1 whitespace-nowrap text-gold opacity-0 transition-opacity duration-150 group-hover/thesis:opacity-100 group-focus/thesis:opacity-100"
+      >
+        Coming soon
+      </span>
+      <span className="sr-only">Thesis article — coming soon</span>
+    </span>
   );
 }
 
