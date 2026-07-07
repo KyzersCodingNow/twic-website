@@ -56,6 +56,9 @@ export function Footer() {
             <Link href="/portfolio" className="hover:text-gold">
               Portfolio
             </Link>
+            <Link href="/all" className="hover:text-gold">
+              Use $ALL
+            </Link>
             <Link href="/sponsors" className="hover:text-gold">
               Sponsors
             </Link>
