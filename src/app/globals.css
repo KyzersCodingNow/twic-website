@@ -11,32 +11,40 @@ html {
 }
 
 body {
-  background-color: #0a0a0a;
-  color: #f5f2ea;
+  /* TWIC ink ground — flat, no textures. */
+  background-color: #0f0f0f;
+  color: #ffffff;
   -webkit-font-smoothing: antialiased;
   text-rendering: optimizeLegibility;
 }
 
-/* Tabular numbers everywhere they matter — digits don't jitter on update. */
+/* Tabular numbers for all data — digits don't jitter. */
 .tnum {
   font-variant-numeric: tabular-nums;
   font-feature-settings: "tnum";
 }
 
-/* Visible, deliberate focus states for keyboard nav. */
-:where(a, button, input, [tabindex]):focus-visible {
-  outline: 2px solid #c9a84c;
-  outline-offset: 2px;
+/* Anton headline treatment: all-caps, tracking 0 to −1%, never stretched. */
+.headline {
+  font-family: var(--font-anton), Impact, sans-serif;
+  text-transform: uppercase;
+  letter-spacing: -0.01em;
+  line-height: 0.92;
 }
 
-/* Thin gold rule used under section headers. */
+/* Visible, deliberate focus states — brand yellow. */
+:where(a, button, input, [tabindex]):focus-visible {
+  outline: 2px solid #ffd400;
+  outline-offset: 3px;
+}
+
+/* Thin yellow rule, used as a broadcast divider. */
 .gold-rule {
   height: 2px;
-  background-color: #c9a84c;
+  background-color: #ffd400;
 }
 
-/* Ticker: duplicate content side-by-side and translate -50% for a seamless
-   loop. Pause on hover. Respect reduced-motion. */
+/* Ticker: duplicate content and translate -50% for a seamless loop. */
 .ticker-track {
   display: inline-flex;
   white-space: nowrap;
@@ -48,7 +56,8 @@ body {
 }
 
 @media (prefers-reduced-motion: reduce) {
-  .ticker-track {
+  .ticker-track,
+  .animate-blink {
     animation: none !important;
   }
 }
