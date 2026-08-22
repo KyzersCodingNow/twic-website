@@ -1,155 +1,128 @@
-import Link from "next/link";
 import type { Metadata } from "next";
-import { SITE, ENDORSEMENT } from "@/data/site";
-import { episodesSorted, latestEpisode } from "@/data/episodes";
-import { portfolio, priceKey } from "@/data/portfolio";
-import { getPrices } from "@/lib/prices";
-import { YouTubeEmbed } from "@/components/YouTubeEmbed";
-import { EmailCapture } from "@/components/EmailCapture";
-import { TickerTape, type TickerItem } from "@/components/TickerTape";
-import { SectionHeader } from "@/components/SectionHeader";
-import { formatDate } from "@/lib/format";
+import { SITE, PREMIERE, LUMA_URL } from "@/data/site";
 
 export const metadata: Metadata = {
-  // Home uses the bare site name, not the template.
-  title: SITE.name,
-  description: SITE.description,
+  title: "Season Premiere",
+  description:
+    "This Week in Crypto returns for a new season. RSVP on Luma so you never miss an episode.",
   alternates: { canonical: "/" },
+  openGraph: {
+    title: `${PREMIERE.season} Premiere · ${SITE.name}`,
+    description:
+      "This Week in Crypto returns for a new season. RSVP on Luma so you never miss an episode.",
+    url: SITE.url,
+  },
 };
 
-export default async function HomePage() {
-  const { prices, ok } = await getPrices();
-
-  const tickerItems: TickerItem[] = portfolio.map((p) => {
-    const entry = prices[priceKey(p)];
-    return {
-      symbol: p.symbol,
-      price: entry?.usd ?? null,
-      change24h: entry?.usd_24h_change ?? null,
-    };
-  });
-
-  const recent = episodesSorted.slice(0, 3);
-
+// Compact "TWIC bar" mark — the yellow bar hugs the word, never a square.
+function TwicBar({ className = "" }: { className?: string }) {
   return (
-    <>
-      {/* HERO */}
-      <section className="relative overflow-hidden border-b border-[#1f1f1f]">
-        <div className="mx-auto max-w-6xl px-5 py-14 sm:py-20">
-          <div className="grid items-center gap-10 lg:grid-cols-[1.1fr_1fr] lg:gap-14">
-            <div>
-              <p className="font-mono text-xs uppercase tracking-[0.25em] text-gold">
-                New episode every week
-              </p>
-              <h1 className="mt-4 font-display text-6xl font-black leading-[0.9] tracking-tightest text-bone sm:text-7xl lg:text-8xl">
-                {SITE.wordmark}
-                <span className="text-gold">.</span>
-              </h1>
-              <p className="mt-6 max-w-xl font-display text-2xl font-bold leading-tight tracking-tight text-bone sm:text-3xl">
-                {SITE.tagline}
-              </p>
-              <div className="mt-8 max-w-lg">
-                <EmailCapture variant="hero" cta="Get TWIC weekly." />
-              </div>
-            </div>
+    <span
+      className={`inline-flex items-center bg-yellow px-2 py-0.5 font-display text-lg font-black leading-none tracking-tight text-ink ${className}`}
+    >
+      TWIC
+      {/* cube period */}
+      <span className="ml-[3px] inline-block h-[7px] w-[7px] bg-ink" aria-hidden="true" />
+    </span>
+  );
+}
 
-            <div className="w-full">
-              <div className="mb-3 flex items-center justify-between">
-                <p className="font-mono text-xs uppercase tracking-wider text-muted">
-                  Latest · Episode {latestEpisode.number}
-                </p>
-                <Link
-                  href={`/episodes/${latestEpisode.number}`}
-                  className="font-display text-xs font-bold uppercase tracking-wide text-gold hover:underline"
-                >
-                  Watch full →
-                </Link>
-              </div>
-              <YouTubeEmbed
-                youtubeId={latestEpisode.youtubeId}
-                title={`Episode ${latestEpisode.number}: ${latestEpisode.title}`}
-              />
-              <h2 className="mt-3 font-display text-lg font-bold tracking-tight text-bone">
-                {latestEpisode.title}
-              </h2>
-            </div>
+export default function Home() {
+  return (
+    <div className="relative flex min-h-screen flex-col bg-ink">
+      {/* Top broadcast rule */}
+      <div className="h-1.5 w-full bg-yellow" aria-hidden="true" />
+
+      {/* Header — compact mark + live tag */}
+      <header className="flex items-center justify-between px-5 py-5 sm:px-8">
+        <TwicBar />
+        <div className="flex items-center gap-2 font-mono text-[11px] font-medium uppercase tracking-[0.18em] text-muted">
+          <span
+            className="inline-block h-2 w-2 bg-yellow animate-blink"
+            aria-hidden="true"
+          />
+          New Season
+        </div>
+      </header>
+
+      {/* Hero — the breaking-news card, full-bleed */}
+      <main className="flex flex-1 flex-col justify-center px-5 py-10 sm:px-8">
+        <div className="mx-auto w-full max-w-5xl">
+          {/* Kicker */}
+          <p className="font-mono text-xs font-medium uppercase tracking-[0.25em] text-yellow">
+            {PREMIERE.kicker}
+          </p>
+
+          {/* Season · Episode data line */}
+          <p className="mt-3 font-mono text-sm tnum uppercase tracking-[0.14em] text-muted">
+            {PREMIERE.season}
+            {PREMIERE.episode ? (
+              <>
+                <span className="mx-2 text-line">/</span>
+                {PREMIERE.episode}
+              </>
+            ) : null}
+          </p>
+
+          {/* Anton headline */}
+          <h1 className="headline mt-5 text-white text-[clamp(2.75rem,11vw,8.5rem)]">
+            {PREMIERE.headline}
+          </h1>
+
+          {/* Standfirst */}
+          <p className="mt-6 max-w-2xl font-sans text-lg font-normal leading-snug text-white/80 sm:text-xl">
+            {PREMIERE.standfirst}
+          </p>
+
+          {/* Air date — mono, broadcast timestamp style */}
+          <p className="mt-6 inline-flex items-center gap-2 border border-line px-3 py-2 font-mono text-xs uppercase tracking-[0.14em] text-muted">
+            <span className="h-1.5 w-1.5 bg-yellow" aria-hidden="true" />
+            {PREMIERE.airDate}
+          </p>
+
+          {/* The single CTA — never miss an episode → Luma */}
+          <div className="mt-10">
+            <a
+              href={LUMA_URL}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="group inline-flex items-stretch border border-yellow bg-yellow text-ink transition-colors hover:bg-ink hover:text-yellow"
+            >
+              <span className="flex flex-col justify-center px-6 py-4 sm:px-8">
+                <span className="font-display text-base font-black uppercase tracking-tight sm:text-lg">
+                  Never miss an episode
+                </span>
+                <span className="mt-0.5 font-mono text-[11px] font-medium uppercase tracking-[0.18em] opacity-70">
+                  RSVP on Luma
+                </span>
+              </span>
+              <span
+                className="flex items-center border-l border-ink/20 px-5 font-display text-2xl font-black group-hover:border-yellow/30"
+                aria-hidden="true"
+              >
+                →
+              </span>
+            </a>
           </div>
         </div>
-      </section>
+      </main>
 
-      {/* TICKER */}
-      <TickerTape items={tickerItems} degraded={!ok} />
+      {/* Lower-third — full wordmark watermark + timestamp */}
+      <footer className="px-5 pb-6 sm:px-8">
+        <div className="mx-auto w-full max-w-5xl border-t border-line pt-5">
+          <div className="flex flex-wrap items-end justify-between gap-3">
+            <p className="headline text-2xl text-white/30 sm:text-3xl">
+              This Week in Crypto
+            </p>
+            <p className="font-mono text-[11px] uppercase tracking-[0.16em] text-muted">
+              New episodes every week
+            </p>
+          </div>
+        </div>
+      </footer>
 
-      {/* RECENT EPISODES */}
-      <section className="mx-auto max-w-6xl px-5 py-16">
-        <div className="mb-8 flex items-end justify-between">
-          <SectionHeader kicker="On the show" title="Recent episodes" />
-          <Link
-            href="/episodes"
-            className="hidden font-display text-sm font-bold uppercase tracking-wide text-gold hover:underline sm:block"
-          >
-            All episodes →
-          </Link>
-        </div>
-        <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
-          {recent.map((ep) => (
-            <Link
-              key={ep.number}
-              href={`/episodes/${ep.number}`}
-              className="group block border border-[#2a2a2a] bg-panel transition-colors hover:border-gold"
-            >
-              <div className="relative aspect-video w-full overflow-hidden bg-ink">
-                {/* eslint-disable-next-line @next/next/no-img-element */}
-                <img
-                  src={`https://i.ytimg.com/vi/${ep.youtubeId}/hqdefault.jpg`}
-                  alt={`Episode ${ep.number} thumbnail`}
-                  loading="lazy"
-                  className="h-full w-full object-cover opacity-90 transition-opacity group-hover:opacity-100"
-                />
-              </div>
-              <div className="p-4">
-                <p className="font-mono text-xs uppercase tracking-wider text-muted">
-                  Ep {ep.number} · {formatDate(ep.date)}
-                </p>
-                <h3 className="mt-2 font-display text-lg font-bold leading-tight tracking-tight text-bone group-hover:text-gold">
-                  {ep.title}
-                </h3>
-              </div>
-            </Link>
-          ))}
-        </div>
-        <Link
-          href="/episodes"
-          className="mt-8 block font-display text-sm font-bold uppercase tracking-wide text-gold hover:underline sm:hidden"
-        >
-          All episodes →
-        </Link>
-      </section>
-
-      {/* ENDORSEMENT */}
-      <section className="border-y border-[#1f1f1f] bg-panel">
-        <div className="mx-auto max-w-4xl px-5 py-16 text-center">
-          <blockquote className="font-display text-3xl font-extrabold leading-tight tracking-tight text-bone sm:text-4xl">
-            &ldquo;{ENDORSEMENT.quote}&rdquo;
-          </blockquote>
-          <cite className="mt-6 block font-mono text-sm not-italic uppercase tracking-wider text-gold">
-            — {ENDORSEMENT.attribution}
-          </cite>
-        </div>
-      </section>
-
-      {/* SECOND EMAIL CAPTURE */}
-      <section className="mx-auto max-w-2xl px-5 py-20 text-center">
-        <h2 className="font-display text-4xl font-black tracking-tightest text-bone sm:text-5xl">
-          The week in crypto, distilled.
-        </h2>
-        <p className="mx-auto mt-4 max-w-md text-muted">
-          One email a week for the people moving capital. Join the desk.
-        </p>
-        <div className="mx-auto mt-8 max-w-lg text-left">
-          <EmailCapture cta="Get TWIC weekly." />
-        </div>
-      </section>
-    </>
+      {/* Bottom broadcast rule */}
+      <div className="h-1.5 w-full bg-yellow" aria-hidden="true" />
+    </div>
   );
 }

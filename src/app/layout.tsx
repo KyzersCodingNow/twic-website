@@ -1,25 +1,27 @@
 import type { Metadata } from "next";
-import { Inter, Archivo, JetBrains_Mono } from "next/font/google";
+import { Anton, Archivo, IBM_Plex_Mono } from "next/font/google";
 import "./globals.css";
 import { SITE } from "@/data/site";
-import { Nav } from "@/components/Nav";
-import { Footer } from "@/components/Footer";
 
-const inter = Inter({
+// TWIC Brand System v1 — "Flat Broadcast Authority".
+// Anton: headlines (all-caps). Archivo: marks & UI. IBM Plex Mono: data.
+const anton = Anton({
   subsets: ["latin"],
-  variable: "--font-inter",
+  weight: "400",
+  variable: "--font-anton",
   display: "swap",
 });
 
 const archivo = Archivo({
   subsets: ["latin"],
-  weight: ["700", "800", "900"],
+  weight: ["400", "500", "700", "800", "900"],
   variable: "--font-archivo",
   display: "swap",
 });
 
-const mono = JetBrains_Mono({
+const mono = IBM_Plex_Mono({
   subsets: ["latin"],
+  weight: ["400", "500", "600"],
   variable: "--font-mono",
   display: "swap",
 });
@@ -57,17 +59,12 @@ export default function RootLayout({
   children: React.ReactNode;
 }) {
   return (
-    <html lang="en" className={`${inter.variable} ${archivo.variable} ${mono.variable}`}>
-      <body className="min-h-screen bg-ink font-sans text-bone antialiased">
-        <a
-          href="#main"
-          className="sr-only focus:not-sr-only focus:absolute focus:left-4 focus:top-4 focus:z-50 focus:bg-gold focus:px-4 focus:py-2 focus:font-semibold focus:text-ink"
-        >
-          Skip to content
-        </a>
-        <Nav />
+    <html
+      lang="en"
+      className={`${anton.variable} ${archivo.variable} ${mono.variable}`}
+    >
+      <body className="min-h-screen bg-ink font-sans text-white antialiased">
         <main id="main">{children}</main>
-        <Footer />
       </body>
     </html>
   );
