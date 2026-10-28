@@ -5,9 +5,11 @@ interface YouTubeEmbedProps {
   youtubeId: string;
   title: string;
   className?: string;
+  // Load immediately — use when the embed is above the fold.
+  eager?: boolean;
 }
 
-export function YouTubeEmbed({ youtubeId, title, className = "" }: YouTubeEmbedProps) {
+export function YouTubeEmbed({ youtubeId, title, className = "", eager = false }: YouTubeEmbedProps) {
   return (
     <div
       className={`relative aspect-video w-full overflow-hidden border border-[#2a2a2a] bg-panel ${className}`}
@@ -16,7 +18,7 @@ export function YouTubeEmbed({ youtubeId, title, className = "" }: YouTubeEmbedP
         className="absolute inset-0 h-full w-full"
         src={`https://www.youtube-nocookie.com/embed/${youtubeId}`}
         title={title}
-        loading="lazy"
+        loading={eager ? "eager" : "lazy"}
         allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
         allowFullScreen
       />

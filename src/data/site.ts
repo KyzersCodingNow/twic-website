@@ -5,9 +5,9 @@ export const SITE = {
   shortName: "TWIC",
   wordmark: "TWIC",
   tagline:
-    "The trusted weekly news show for the people moving capital in crypto.",
+    "The trusted news show for the people moving capital in crypto.",
   description:
-    "This Week in Crypto (TWIC) is the trusted weekly news show for the people moving capital in crypto. New episodes every week.",
+    "This Week in Crypto (TWIC) is the trusted news show for the people moving capital in crypto.",
   // Canonical URL — overridden by NEXT_PUBLIC_SITE_URL when set.
   url: process.env.NEXT_PUBLIC_SITE_URL || "https://thisweekincrypto.show",
 } as const;
@@ -25,13 +25,15 @@ export const PREMIERE = {
   season: "NEW SEASON",
   // Episode tag, e.g. "EP. 143". null hides it (TWIC uses continuous numbering).
   episode: null as string | null,
+  // The premiere episode on YouTube — embedded as the hero.
+  youtubeId: "8IiH9aNHJbE",
   // Big Anton headline for the premiere. Keep it broadcast-short.
-  headline: "THE NEW SEASON STARTS NOW",
+  headline: "THE NEW SEASON IS HERE",
   // One-line supporting statement in Archivo.
   standfirst:
-    "The trusted weekly news show for the people moving capital in crypto is back — new episodes every week.",
-  // Air date. Placeholder until finalized — surfaces visibly, never faked.
-  airDate: "PREMIERE DATE — TBA",
+    "The trusted news show for the people moving capital in crypto is back.",
+  // Status line under the headline.
+  airDate: "OUT NOW",
   // Optional short kicker over the headline.
   kicker: "SEASON PREMIERE",
 } as const;
