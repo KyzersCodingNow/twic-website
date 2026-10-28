@@ -1,16 +1,32 @@
 import type { Metadata } from "next";
 import { SITE, PREMIERE, LUMA_URL } from "@/data/site";
+import { YouTubeEmbed } from "@/components/YouTubeEmbed";
+
+const DESCRIPTION =
+  "The This Week in Crypto season premiere is out. Watch it now, and RSVP on Luma so you never miss an episode.";
 
 export const metadata: Metadata = {
   title: "Season Premiere",
-  description:
-    "This Week in Crypto returns for a new season. RSVP on Luma so you never miss an episode.",
+  description: DESCRIPTION,
   alternates: { canonical: "/" },
   openGraph: {
-    title: `${PREMIERE.season} Premiere · ${SITE.name}`,
-    description:
-      "This Week in Crypto returns for a new season. RSVP on Luma so you never miss an episode.",
+    title: `Season Premiere · ${SITE.name}`,
+    description: DESCRIPTION,
     url: SITE.url,
+    images: [
+      {
+        url: `https://i.ytimg.com/vi/${PREMIERE.youtubeId}/maxresdefault.jpg`,
+        width: 1280,
+        height: 720,
+        alt: `${SITE.name} season premiere`,
+      },
+    ],
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: `Season Premiere · ${SITE.name}`,
+    description: DESCRIPTION,
+    images: [`https://i.ytimg.com/vi/${PREMIERE.youtubeId}/maxresdefault.jpg`],
   },
 };
 
@@ -41,52 +57,58 @@ export default function Home() {
             className="inline-block h-2 w-2 bg-yellow animate-blink"
             aria-hidden="true"
           />
-          New Season
+          {PREMIERE.season}
         </div>
       </header>
 
-      {/* Hero — the breaking-news card, full-bleed */}
-      <main className="flex flex-1 flex-col justify-center px-5 py-10 sm:px-8">
+      {/* Hero — headline, premiere player, single follow CTA */}
+      <main className="flex flex-1 flex-col justify-center px-5 pb-12 pt-4 sm:px-8">
         <div className="mx-auto w-full max-w-5xl">
-          {/* Kicker */}
-          <p className="font-mono text-xs font-medium uppercase tracking-[0.25em] text-yellow">
-            {PREMIERE.kicker}
-          </p>
-
-          {/* Season · Episode data line */}
-          <p className="mt-3 font-mono text-sm tnum uppercase tracking-[0.14em] text-muted">
-            {PREMIERE.season}
+          {/* Kicker + status */}
+          <div className="flex flex-wrap items-center gap-3">
+            <p className="font-mono text-xs font-medium uppercase tracking-[0.25em] text-yellow">
+              {PREMIERE.kicker}
+            </p>
+            <span className="inline-flex items-center gap-2 bg-yellow px-2 py-0.5 font-mono text-[11px] font-semibold uppercase tracking-[0.14em] text-ink">
+              {PREMIERE.airDate}
+            </span>
             {PREMIERE.episode ? (
-              <>
+              <p className="font-mono text-xs tnum uppercase tracking-[0.14em] text-muted">
+                {PREMIERE.season}
                 <span className="mx-2 text-line">/</span>
                 {PREMIERE.episode}
-              </>
+              </p>
             ) : null}
-          </p>
+          </div>
 
           {/* Anton headline */}
-          <h1 className="headline mt-5 text-white text-[clamp(2.75rem,11vw,8.5rem)]">
+          <h1 className="headline mt-4 text-white text-[clamp(2.5rem,8vw,6rem)]">
             {PREMIERE.headline}
           </h1>
 
           {/* Standfirst */}
-          <p className="mt-6 max-w-2xl font-sans text-lg font-normal leading-snug text-white/80 sm:text-xl">
+          <p className="mt-4 max-w-2xl font-sans text-lg font-normal leading-snug text-white/80 sm:text-xl">
             {PREMIERE.standfirst}
           </p>
 
-          {/* Air date — mono, broadcast timestamp style */}
-          <p className="mt-6 inline-flex items-center gap-2 border border-line px-3 py-2 font-mono text-xs uppercase tracking-[0.14em] text-muted">
-            <span className="h-1.5 w-1.5 bg-yellow" aria-hidden="true" />
-            {PREMIERE.airDate}
-          </p>
+          {/* The premiere */}
+          <YouTubeEmbed
+            youtubeId={PREMIERE.youtubeId}
+            title={`${SITE.name} — season premiere`}
+            eager
+            className="mt-8"
+          />
 
-          {/* The single CTA — never miss an episode → Luma */}
-          <div className="mt-10">
+          {/* The follow CTA — never miss an episode → Luma */}
+          <div className="mt-8 flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
+            <p className="font-mono text-xs uppercase tracking-[0.16em] text-muted">
+              Get notified when the next one drops
+            </p>
             <a
               href={LUMA_URL}
               target="_blank"
               rel="noopener noreferrer"
-              className="group inline-flex items-stretch border border-yellow bg-yellow text-ink transition-colors hover:bg-ink hover:text-yellow"
+              className="group inline-flex items-stretch self-start border border-yellow bg-yellow text-ink transition-colors hover:bg-ink hover:text-yellow sm:self-auto"
             >
               <span className="flex flex-col justify-center px-6 py-4 sm:px-8">
                 <span className="font-display text-base font-black uppercase tracking-tight sm:text-lg">
@@ -107,17 +129,12 @@ export default function Home() {
         </div>
       </main>
 
-      {/* Lower-third — full wordmark watermark + timestamp */}
+      {/* Lower-third — full wordmark watermark */}
       <footer className="px-5 pb-6 sm:px-8">
         <div className="mx-auto w-full max-w-5xl border-t border-line pt-5">
-          <div className="flex flex-wrap items-end justify-between gap-3">
-            <p className="headline text-2xl text-white/30 sm:text-3xl">
-              This Week in Crypto
-            </p>
-            <p className="font-mono text-[11px] uppercase tracking-[0.16em] text-muted">
-              New episodes every week
-            </p>
-          </div>
+          <p className="headline text-2xl text-white/30 sm:text-3xl">
+            This Week in Crypto
+          </p>
         </div>
       </footer>
 
