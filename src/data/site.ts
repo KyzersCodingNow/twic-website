@@ -9,7 +9,7 @@ export const SITE = {
   description:
     "This Week in Crypto (TWIC) is the trusted news show for the people moving capital in crypto.",
   // Canonical URL — overridden by NEXT_PUBLIC_SITE_URL when set.
-  url: process.env.NEXT_PUBLIC_SITE_URL || "https://thisweekincrypto.show",
+  url: process.env.NEXT_PUBLIC_SITE_URL || "https://twic.tv",
 } as const;
 
 // The single call-to-action for the launch landing page: RSVP on Luma so you
@@ -39,7 +39,7 @@ export const PREMIERE = {
 } as const;
 
 export const SOCIALS = {
-  x: "https://x.com/twicshow",
+  x: "https://x.com/ThisWkInCrypto",
   youtube: "https://youtube.com/@thisweekincrypto",
   spotify: "https://open.spotify.com/show/placeholder",
   apple: "https://podcasts.apple.com/podcast/placeholder",

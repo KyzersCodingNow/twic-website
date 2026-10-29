@@ -1,6 +1,8 @@
 import type { Metadata } from "next";
+import Link from "next/link";
 import { SITE, PREMIERE, LUMA_URL } from "@/data/site";
 import { YouTubeEmbed } from "@/components/YouTubeEmbed";
+import { TwicBar } from "@/components/TwicBar";
 
 const DESCRIPTION =
   "The This Week in Crypto season premiere is out. Watch it now, and RSVP on Luma so you never miss an episode.";
@@ -29,19 +31,6 @@ export const metadata: Metadata = {
     images: [`https://i.ytimg.com/vi/${PREMIERE.youtubeId}/maxresdefault.jpg`],
   },
 };
-
-// Compact "TWIC bar" mark — the yellow bar hugs the word, never a square.
-function TwicBar({ className = "" }: { className?: string }) {
-  return (
-    <span
-      className={`inline-flex items-center bg-yellow px-2 py-0.5 font-display text-lg font-black leading-none tracking-tight text-ink ${className}`}
-    >
-      TWIC
-      {/* cube period */}
-      <span className="ml-[3px] inline-block h-[7px] w-[7px] bg-ink" aria-hidden="true" />
-    </span>
-  );
-}
 
 export default function Home() {
   return (
@@ -134,6 +123,15 @@ export default function Home() {
         <div className="mx-auto w-full max-w-5xl border-t border-line pt-5">
           <p className="headline text-2xl text-white/30 sm:text-3xl">
             This Week in Crypto
+          </p>
+          {/* Sponsor disclosure — mirrors the line read on every episode */}
+          <p className="mt-4 max-w-3xl text-sm leading-snug text-muted">
+            {SITE.name} is funded by our sponsors. They have no editorial input.
+            There is no TWIC token.{" "}
+            <Link href="/policy" className="text-white underline decoration-line underline-offset-4 hover:text-yellow hover:decoration-yellow">
+              Read our editorial independence policy
+            </Link>
+            .
           </p>
         </div>
       </footer>

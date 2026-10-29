@@ -1,8 +1,8 @@
 import type { MetadataRoute } from "next";
 import { SITE } from "@/data/site";
 
-// Launch mode: only the season-premiere landing is public. Legacy routes are
-// hidden behind redirects, so the sitemap lists just "/". Restore the fuller
+// Launch mode: only the landing and the policy page are public. Legacy routes are
+// hidden behind redirects, so the sitemap lists just those two. Restore the fuller
 // sitemap when the multi-page site comes back.
 export default function sitemap(): MetadataRoute.Sitemap {
   const base = SITE.url.replace(/\/$/, "");
@@ -12,6 +12,12 @@ export default function sitemap(): MetadataRoute.Sitemap {
       lastModified: new Date(),
       changeFrequency: "weekly",
       priority: 1,
+    },
+    {
+      url: `${base}/policy`,
+      lastModified: new Date(),
+      changeFrequency: "monthly",
+      priority: 0.5,
     },
   ];
 }
