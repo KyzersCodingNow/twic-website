@@ -25,8 +25,12 @@ export const PREMIERE = {
   season: "NEW SEASON",
   // Episode tag, e.g. "EP. 143". null hides it (TWIC uses continuous numbering).
   episode: null as string | null,
-  // The premiere episode on YouTube — embedded as the hero.
+  // The premiere episode on YouTube.
   youtubeId: "8IiH9aNHJbE",
+  // YouTube refuses to play age-restricted videos inside embeds on other
+  // sites, so while the premiere is restricted we show a poster that opens
+  // YouTube instead. Flip to true once the restriction is lifted in Studio.
+  embed: false,
   // Big Anton headline for the premiere. Keep it broadcast-short.
   headline: "THE NEW SEASON IS HERE",
   // One-line supporting statement in Archivo.

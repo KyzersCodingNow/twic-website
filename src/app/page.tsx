@@ -3,6 +3,7 @@ import Link from "next/link";
 import { SITE, PREMIERE, LUMA_URL } from "@/data/site";
 import { YouTubeEmbed } from "@/components/YouTubeEmbed";
 import { TwicBar } from "@/components/TwicBar";
+import { VideoPoster } from "@/components/VideoPoster";
 
 const DESCRIPTION =
   "The This Week in Crypto season premiere is out. Watch it now, and RSVP on Luma so you never miss an episode.";
@@ -80,13 +81,21 @@ export default function Home() {
             {PREMIERE.standfirst}
           </p>
 
-          {/* The premiere */}
-          <YouTubeEmbed
-            youtubeId={PREMIERE.youtubeId}
-            title={`${SITE.name} — season premiere`}
-            eager
-            className="mt-8"
-          />
+          {/* The premiere — embed when YouTube allows it, otherwise a poster */}
+          {PREMIERE.embed ? (
+            <YouTubeEmbed
+              youtubeId={PREMIERE.youtubeId}
+              title={`${SITE.name} — season premiere`}
+              eager
+              className="mt-8"
+            />
+          ) : (
+            <VideoPoster
+              youtubeId={PREMIERE.youtubeId}
+              title={`${SITE.name} — season premiere`}
+              className="mt-8"
+            />
+          )}
 
           {/* The follow CTA — never miss an episode → Luma */}
           <div className="mt-8 flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
