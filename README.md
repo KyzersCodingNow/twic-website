@@ -5,8 +5,9 @@ An ALLMIGHT production. **A different kind of signal.**
 
 The launch homepage uses the approved **02 — Editorial Overprint** identity:
 native SVG artwork, the Signal mark, Archivo typography, IBM Plex Mono labels,
-and a carbon, paper, and citron palette. It presents one premiere, show context,
-and episode reminders through Luma.
+and a carbon, paper, and citron palette. It leads with the actual premiere, then
+selected work, a sourced host story, dated audience reactions, public-record
+links, episode reminders, and direct guest/partnership contact.
 
 **Stack:** Next.js **15.5.29** (App Router), React / React DOM **19.3.1**,
 TypeScript, and Tailwind CSS. Deployment uses the existing Vercel project.
@@ -47,19 +48,25 @@ Edit **`src/data/site.ts`**:
 | --- | --- |
 | `PREMIERE.youtubeId` | Video, YouTube poster, and direct watch link. Use the video ID, not its full URL. |
 | `PREMIERE.title` | Visible episode title and player accessibility label. |
-| `PREMIERE.standfirst` | Description alongside the video. |
-| `PREMIERE.kicker`, `season`, `airDate` | Premiere label, season label, and availability text. |
+| `PREMIERE.kicker`, `airDate` | Premiere label and availability text. |
 | `LUMA_URL` | All episode-reminder buttons and the Luma footer link. |
 | `SITE` | Site identity and shared metadata; `SITE.url` supplies the canonical base URL. |
 | `SOCIALS.x` | The homepage's TWIC on X footer link. |
 
+Edit **`src/data/homepage.ts`** for selected work, measured runtime labels, dated
+audience reactions, public-record links, and the public contact email. The local
+featured poster is passed to the player in `src/app/page.tsx`; update it together
+with the episode ID. `PREMIERE.season` and `standfirst` remain in the configuration
+but are not displayed in the current layout.
+
 Homepage editorial copy and layout live in `src/app/page.tsx`; styling lives in
 `src/app/page.module.css`. See [the Editorial Overprint guide](docs/editorial-overprint.md)
-for assets, typography, and release checks.
+for assets, typography, and release checks, and the
+[homepage evidence record](docs/homepage-evidence.md) for sources and image provenance.
 
 ## Launch mode and future modules
 
-**This is currently a single premiere page.** Temporary redirects in
+**This is currently a single-page show website.** Temporary redirects in
 `next.config.mjs` send `/episodes`, `/portfolio`, `/all`, `/sponsors`, `/about`,
 and their nested routes back to `/`. The existing multi-page modules are retained
 as hidden scaffolding; some contain explicit placeholder data or destinations.

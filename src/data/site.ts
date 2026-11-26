@@ -6,7 +6,7 @@ export const SITE = {
   wordmark: "TWIC",
   tagline: "A different kind of signal.",
   description:
-    "News, conversations, and a sense of humor. This Week in Crypto with Kevin Ricoy.",
+    "Inside the story. In on the joke. Crypto news, conversations, and a critical eye with Kevin Ricoy.",
   // Canonical URL — overridden by NEXT_PUBLIC_SITE_URL when set.
   url: process.env.NEXT_PUBLIC_SITE_URL || "https://twic.tv",
 } as const;
@@ -41,9 +41,9 @@ export const SOCIALS = {
   apple: "https://podcasts.apple.com/podcast/placeholder",
 } as const;
 
-// The marquee endorsement, reused across pages.
+// Historical personal audience reaction. The homepage uses dated reactions.
 export const ENDORSEMENT = {
   quote:
-    "Cancelled all those crypto newsletter subs — this is all I need.",
-  attribution: "Lily Liu, President, Solana Foundation",
+    "Cancelled all those crypto newsletter subs this is all I need",
+  attribution: "Lily Liu · June 28, 2024",
 } as const;

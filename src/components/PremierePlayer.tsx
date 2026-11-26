@@ -8,12 +8,14 @@ interface PremierePlayerProps {
   youtubeId: string;
   title: string;
   posterSrc?: string;
+  priority?: boolean;
 }
 
 export function PremierePlayer({
   youtubeId,
   title,
   posterSrc,
+  priority = false,
 }: PremierePlayerProps) {
   const [playing, setPlaying] = useState(false);
   const [useFallbackPoster, setUseFallbackPoster] = useState(false);
@@ -55,8 +57,9 @@ export function PremierePlayer({
             src={poster}
             alt=""
             fill
-            sizes="(max-width: 767px) calc(100vw - 40px), (max-width: 1279px) 70vw, 960px"
+            sizes="(max-width: 700px) calc(100vw - 40px), 60vw"
             unoptimized
+            priority={priority}
             className={styles.posterImage}
             onError={() => setUseFallbackPoster(true)}
             onLoad={(event) => {
