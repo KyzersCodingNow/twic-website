@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import Image from "next/image";
+import Link from "next/link";
 import { SITE, PREMIERE, LUMA_URL, SOCIALS } from "@/data/site";
 import { PremierePlayer } from "@/components/PremierePlayer";
 import { SignalMark } from "@/components/SignalMark";
@@ -159,13 +160,17 @@ export default function Home() {
             <Image src="/brand/twic-lockup-paper.svg" alt="This Week in Crypto" width={633} height={155} />
           </a>
           <p>A different kind of signal.</p>
-          <nav className={styles.footerLinks} aria-label="Follow the show">
+          <nav className={styles.footerLinks} aria-label="Follow the show and read our policy">
             <a href={SOCIALS.x} target="_blank" rel="noopener noreferrer">TWIC on X</a>
             <a href={LUMA_URL} target="_blank" rel="noopener noreferrer">Luma</a>
+            <Link href="/policy">Editorial policy</Link>
           </nav>
         </div>
         <div className={`${styles.container} ${styles.footerBottom}`}>
           <p>© {new Date().getFullYear()} {SITE.name}</p>
+          <p>
+            Funded by our sponsors, who have no editorial input. There is no TWIC token.
+          </p>
           <p>An ALLMIGHT production.</p>
         </div>
       </footer>
