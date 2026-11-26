@@ -113,11 +113,10 @@
   .watchSection { padding-block: 1.75rem 2.5rem; }
   .sectionRule { margin-bottom: 1.5rem; padding-bottom: 1rem; }
   .feature { grid-template-columns: 1fr; gap: 2rem; }
-  .featureCopy { display: grid; grid-template-columns: 1fr 1fr; gap: 0 1.5rem; }
-  .featureLabel { grid-column: 1 / -1; }
-  .featureTitle { grid-column: 1 / -1; font-size: 2.75rem; margin-top: .75rem; }
+  .featureCopy { display: block; }
+  .featureTitle { font-size: 2.75rem; margin-top: .75rem; }
   .featureDescription { max-width: none; }
-  .featureByline { border: none; align-self: end; padding: 0; margin-top: 1rem; }
+  .featureByline { border: none; padding: 0; margin-top: 1.35rem; }
   .about { grid-template-columns: 1fr; gap: 1.75rem; padding-block: 3rem; }
   .aboutLabel { flex-direction: row; align-items: center; }
   .aboutMark { width: 34px; }
@@ -139,7 +138,7 @@
   .container, .headerInner { width: calc(100% - 2rem); }
   .brand { width: 145px; }
   .headerCta { padding-inline: .75rem; }
-  .featureCopy { display: block; }
+  .heroTitle { font-size: clamp(2.35rem, 12vw, 2.9rem); }
   .featureTitle { font-size: 2.35rem; }
   .featureByline { margin-top: 1.5rem; }
 }

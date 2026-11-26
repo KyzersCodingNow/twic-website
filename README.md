@@ -29,8 +29,7 @@ npm run build
 npm run start
 ```
 
-The Editorial Overprint implementation was checked with `npm ci` and
-`npm run build`. Its production dependency audit returned **0 vulnerabilities**
+The Editorial Overprint implementation was checked with `npm run build`. Its production dependency audit returned **0 vulnerabilities**
 on November 26, 2026. Recheck the lockfile when dependencies change:
 
 ```bash

@@ -89,3 +89,23 @@ full collage in every section.
 The launch design does not require enabling a newsletter provider, wallet,
 portfolio feed, or database. Those retained modules have separate configuration
 and content requirements documented in the README.
+
+## Review record — November 26, 2026
+
+- The production build completed successfully, including type checking and all
+  static routes. The generated routing manifest retains all ten launch-mode 307
+  redirects.
+- The built homepage was visually reviewed at desktop width and in 390px and
+  320px frames. No horizontal overflow was observed. All homepage images loaded.
+- Keyboard navigation reaches the skip link; activating it focuses the main
+  landmark. The premiere link reaches the watch section. Activating the poster
+  with Enter mounts the privacy-enhanced YouTube player and transfers focus.
+- YouTube controls and the correct episode loaded, but streaming remained at
+  the buffering stage in the review browser. Sustained playback still needs a
+  check in a regular browser; the direct YouTube watch link is retained.
+- Vercel successfully built the branch preview, which requires Vercel sign-in.
+  Visual checks used a local static copy of the production-built homepage, not
+  an authenticated inspection of that protected deployment.
+
+Review screenshots: [desktop](previews/homepage-desktop.jpg) ·
+[mobile](previews/homepage-mobile.jpg).
