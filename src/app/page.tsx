@@ -4,6 +4,7 @@ import { SITE, PREMIERE, LUMA_URL, SOCIALS } from "@/data/site";
 import { AUDIENCE_REACTIONS, CONTACT_EMAIL, HOST_PROFILE_URL, PUBLIC_RECORD, SELECTED_WORK } from "@/data/homepage";
 import { PremierePlayer } from "@/components/PremierePlayer";
 import { SignalMark } from "@/components/SignalMark";
+import { EditorialOverprint } from "@/components/EditorialOverprint";
 import styles from "./page.module.css";
 
 const DESCRIPTION = "Inside the story. In on the joke. Crypto news, conversations, and a critical eye with Kevin Ricoy. Watch This Week in Crypto.";
@@ -70,7 +71,7 @@ export default function Home() {
         </section>
 
         <div className={styles.artBreak} aria-hidden="true">
-          <Image src="/brand/editorial-overprint.svg" alt="" fill sizes="100vw" className={styles.artBreakImage} />
+          <EditorialOverprint className={styles.artBreakArt} />
         </div>
 
         <section id="selected" className={`${styles.container} ${styles.selected}`} aria-labelledby="selected-title">

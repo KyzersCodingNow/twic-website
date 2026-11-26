@@ -37,6 +37,7 @@ fall back to YouTube's `hqdefault.jpg`.
 | `src/components/PremierePlayer.tsx` | Poster fallback, player activation, and focus handling. |
 | `src/components/PremierePlayer.module.css` | Player presentation. |
 | `src/components/SignalMark.tsx` | Inline Signal mark. |
+| `src/components/EditorialOverprint.tsx` | Native inline vector artwork for the full-width art band. |
 | `src/app/layout.tsx` | Archivo / IBM Plex Mono loading and shared metadata. |
 | `src/app/globals.css` | Shared styles, including the skip link. |
 | `docs/homepage-evidence.md` | Content sources, asset provenance, and limits on the claims supported by those sources. |
@@ -80,7 +81,7 @@ do not convert those comments into current institutional endorsements.
 
 | Asset | Usage |
 | --- | --- |
-| `public/brand/editorial-overprint.svg` | Native vector collage used in the art band. |
+| `public/brand/editorial-overprint.svg` | Standalone vector master, mirrored by the inline art-band component. |
 | `public/brand/twic-lockup-paper.svg` | Light wordmark for the carbon header and footer. |
 | `public/brand/twic-lockup-carbon.svg` | Dark wordmark available for light surfaces. |
 | `public/show/*.jpg` | Local premiere poster, selected-work stills, and on-air portrait; see the evidence record for sources. |
@@ -97,6 +98,12 @@ The core palette is carbon `#151515`, paper `#F0EFE9`, citron `#E8E655`, and all
 and metadata. Preserve the artwork's aspect ratio, use deliberate responsive
 crops, and keep fine print textures away from readable text. Avoid repeating the
 full collage in every section.
+
+The art band renders native SVG paths through `EditorialOverprint`, with a full
+3:1 drawing surface clipped by the shallow band. This keeps the geometry in the
+document instead of stretching an external image surface on ultrawide displays.
+The 53% desktop and centered mobile crops retain the approved composition.
+Keep the inline paths and the standalone SVG master in sync when editing the art.
 
 ## Release checks
 
@@ -168,3 +175,19 @@ consult the historical commit for the original review images.
 
 Final captures: [desktop](previews/homepage-desktop.jpg) ·
 [mobile](previews/homepage-mobile.jpg) · [opening screen](previews/homepage-opening.jpg).
+
+## Review record — ultrawide banner, November 26, 2026
+
+- Replaced the external SVG image in the art band with native inline SVG paths,
+  retaining the source geometry, colors, band height, and responsive crops.
+- The production build and type checking passed; all 15 static outputs remain.
+- Reviewed the production-built homepage in 5120px, 3440px, 1920px, and 390px
+  browser frames. Their content areas exclude the normal 15px vertical scrollbar.
+  No horizontal overflow was observed, and the art fills the band at each width.
+- Inspected the large vector edges at native screenshot size and the narrow
+  mobile crop. The band contains inline SVG, with no external image element or
+  raster artwork. No additional client-side JavaScript was introduced.
+- Browser QA used the managed local production-build preview. It does not
+  constitute testing on a physical ultrawide monitor or in every browser.
+
+[5120px frame — banner capture](previews/banner-ultrawide-5120.jpg).
