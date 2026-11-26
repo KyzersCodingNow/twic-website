@@ -1,17 +1,9 @@
 import type { Metadata } from "next";
-import { Anton, Archivo, IBM_Plex_Mono } from "next/font/google";
+import { Archivo, IBM_Plex_Mono } from "next/font/google";
 import "./globals.css";
 import { SITE } from "@/data/site";
 
-// TWIC Brand System v1 — "Flat Broadcast Authority".
-// Anton: headlines (all-caps). Archivo: marks & UI. IBM Plex Mono: data.
-const anton = Anton({
-  subsets: ["latin"],
-  weight: "400",
-  variable: "--font-anton",
-  display: "swap",
-});
-
+// Editorial Overprint: Archivo display/body and IBM Plex Mono metadata.
 const archivo = Archivo({
   subsets: ["latin"],
   weight: ["400", "500", "700", "800", "900"],
@@ -40,13 +32,13 @@ export const metadata: Metadata = {
     title: SITE.name,
     description: SITE.description,
     url: SITE.url,
-    images: [{ url: "/og.svg", width: 1200, height: 630, alt: SITE.name }],
+    images: [{ url: "/og.png", width: 1200, height: 630, alt: SITE.name }],
   },
   twitter: {
     card: "summary_large_image",
     title: SITE.name,
     description: SITE.description,
-    images: ["/og.svg"],
+    images: ["/og.png"],
   },
   icons: {
     icon: [{ url: "/favicon.svg", type: "image/svg+xml" }],
@@ -61,10 +53,11 @@ export default function RootLayout({
   return (
     <html
       lang="en"
-      className={`${anton.variable} ${archivo.variable} ${mono.variable}`}
+      className={`${archivo.variable} ${mono.variable}`}
     >
       <body className="min-h-screen bg-ink font-sans text-white antialiased">
-        <main id="main">{children}</main>
+        <a href="#main" className="skip-link">Skip to content</a>
+        {children}
       </body>
     </html>
   );

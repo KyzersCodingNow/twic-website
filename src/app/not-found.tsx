@@ -7,7 +7,7 @@ export const metadata: Metadata = {
 
 export default function NotFound() {
   return (
-    <div className="mx-auto flex min-h-[60vh] max-w-2xl flex-col items-center justify-center px-5 py-20 text-center">
+    <main id="main" tabIndex={-1} className="mx-auto flex min-h-[60vh] max-w-2xl flex-col items-center justify-center px-5 py-20 text-center">
       <p className="font-display text-8xl font-black tracking-tightest text-gold">
         404
       </p>
@@ -23,6 +23,6 @@ export default function NotFound() {
       >
         Back to home
       </Link>
-    </div>
+    </main>
   );
 }

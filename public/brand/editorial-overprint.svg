@@ -1,0 +1,37 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1500" height="500" viewBox="0 0 1500 500">
+<title>TWIC — Editorial Overprint</title>
+<desc>Original flat editorial composition built from cropped cryptocurrency-symbol forms, exact printing layers and stepped apertures.</desc>
+<defs>
+  <path id="bitcoin" fill-rule="evenodd" d="M0 20H46C78 20 92 32 92 54C92 70 84 78 71 84C90 88 101 100 101 119C101 145 80 158 47 158H0V139H17V39H0ZM38 39V74H47C63 74 70 68 70 56C70 44 62 39 48 39ZM38 94V139H50C68 139 78 132 78 116C78 101 68 94 50 94Z"/>
+  <g id="btc"><use href="#bitcoin"/><path d="M25 0H35V20H25ZM48 0H58V20H48ZM25 158H35V178H25ZM48 158H58V178H48Z"/></g>
+  <pattern id="dots" width="7" height="7" patternUnits="userSpaceOnUse"><circle cx="1.75" cy="1.75" r="1.05" fill="#151515"/><circle cx="5.25" cy="5.25" r="1.05" fill="#151515"/></pattern>
+  <pattern id="hatch" width="8" height="8" patternUnits="userSpaceOnUse" patternTransform="rotate(-28)"><path d="M0 0V8" stroke="#F0EFE9" stroke-width="1.1"/></pattern>
+  <clipPath id="screen"><path d="M310 0H890L633 238H422L310 146Z"/></clipPath>
+  <clipPath id="rules"><path d="M907 500V447H990V400H1118V350H1500V500Z"/></clipPath>
+</defs>
+<rect width="1500" height="500" fill="#151515"/>
+<!-- A light editorial field opens the full-width image. -->
+<path d="M0 0H870L510 500H0Z" fill="#F0EFE9"/>
+<path d="M310 0H890L633 238H422L310 146Z" fill="url(#dots)"/>
+<!-- Exact citron print registration under a large cropped Bitcoin fragment. -->
+<g transform="translate(-45 -35) rotate(-9 230 250) scale(3.65)" fill="#E8E655"><use href="#btc" transform="translate(2.1 0)"/></g>
+<g transform="translate(-45 -35) rotate(-9 230 250) scale(3.65)" fill="#151515"><use href="#btc"/></g>
+<!-- One assertive printing layer crosses the composition. -->
+<path d="M197 500L834 0H1034L418 500Z" fill="#E8E655"/>
+<!-- An angular interruption recalls the existing Signal vocabulary. -->
+<path d="M340 500V438H407V385H474V332H541V279H608V226H675V500Z" fill="#151515"/>
+<!-- Interlocking Ethereum facets: opaque, geometric ink faces. -->
+<path d="M817 -88L1080 267L817 366L554 267Z" fill="#F0EFE9"/>
+<path d="M817 -88V366L1080 267Z" fill="#A5AAA7"/>
+<path d="M554 301L817 647L1080 301L817 408Z" fill="#F0EFE9"/>
+<path d="M817 408V647L1080 301Z" fill="#A5AAA7"/>
+<!-- A top-right paper plane lets the Solana fragments become negative shapes. -->
+<path d="M1032 -35H1540V313H1095L1016 234Z" fill="#E8E655"/>
+<g transform="translate(1084 9) rotate(-7 200 160)" fill="#151515">
+  <path d="M40 0H456L416 80H0Z M0 118H416L456 198H40Z M40 236H456L416 316H0Z"/>
+</g>
+<!-- Fine line-screen sits in a stepped crop, never as decorative confetti. -->
+<g clip-path="url(#rules)"><rect x="880" y="330" width="650" height="190" fill="url(#hatch)"/></g>
+<!-- Deliberate paper margins give the cut a finished print rhythm. -->
+<path d="M1424 391H1500V500H1387V463H1424Z" fill="#F0EFE9"/>
+</svg>

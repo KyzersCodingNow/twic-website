@@ -11,9 +11,8 @@ html {
 }
 
 body {
-  /* TWIC ink ground — flat, no textures. */
-  background-color: #0f0f0f;
-  color: #ffffff;
+  background-color: #151515;
+  color: #f0efe9;
   -webkit-font-smoothing: antialiased;
   text-rendering: optimizeLegibility;
 }
@@ -24,9 +23,10 @@ body {
   font-feature-settings: "tnum";
 }
 
-/* Anton headline treatment: all-caps, tracking 0 to −1%, never stretched. */
+/* Legacy routes retain their display class with the approved Archivo family. */
 .headline {
-  font-family: var(--font-anton), Impact, sans-serif;
+  font-family: var(--font-archivo), sans-serif;
+  font-weight: 900;
   text-transform: uppercase;
   letter-spacing: -0.01em;
   line-height: 0.92;
@@ -34,15 +34,30 @@ body {
 
 /* Visible, deliberate focus states — brand yellow. */
 :where(a, button, input, [tabindex]):focus-visible {
-  outline: 2px solid #ffd400;
+  outline: 2px solid #e8e655;
   outline-offset: 3px;
 }
 
 /* Thin yellow rule, used as a broadcast divider. */
 .gold-rule {
   height: 2px;
-  background-color: #ffd400;
+  background-color: #e8e655;
 }
+
+.skip-link {
+  position: fixed;
+  z-index: 100;
+  top: 1rem;
+  left: 1rem;
+  transform: translateY(-200%);
+  background: #e8e655;
+  color: #151515;
+  padding: 1rem 1.25rem;
+  font-weight: 700;
+}
+
+.skip-link:focus { transform: translateY(0); }
+#main:focus { outline: none; }
 
 /* Ticker: duplicate content and translate -50% for a seamless loop. */
 .ticker-track {
@@ -56,6 +71,7 @@ body {
 }
 
 @media (prefers-reduced-motion: reduce) {
+  html { scroll-behavior: auto; }
   .ticker-track,
   .animate-blink {
     animation: none !important;

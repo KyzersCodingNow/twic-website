@@ -1,67 +1,91 @@
 # TWIC — This Week in Crypto
 
-The official website for **This Week in Crypto (TWIC)**, the trusted weekly news
-show for the people moving capital in crypto. _An ALLMIGHT production._
+The website for **This Week in Crypto with Kevin Ricoy** at **https://twic.tv**.
+An ALLMIGHT production. **A different kind of signal.**
 
-Next.js 14 (App Router) · TypeScript · Tailwind CSS · deployed on Vercel.
+The launch homepage uses the approved **02 — Editorial Overprint** identity:
+native SVG artwork, the Signal mark, Archivo typography, IBM Plex Mono labels,
+and a carbon, paper, and citron palette. It presents one premiere, show context,
+and episode reminders through Luma.
 
-## Quick start
+**Stack:** Next.js **15.5.29** (App Router), React / React DOM **19.3.1**,
+TypeScript, and Tailwind CSS. Deployment uses the existing Vercel project.
 
-```bash
-npm install
-cp .env.example .env.local   # fill in values (all optional — sensible fallbacks)
-npm run dev                  # http://localhost:3000
-```
-
-```bash
-npm run build && npm run start   # production build
-npm run lint                     # zero warnings expected
-```
-
-## Deploy (Vercel, one command)
+## Run locally
 
 ```bash
-npx vercel        # preview
-npx vercel --prod # production
+npm ci
+npm run dev
 ```
 
-Next.js is auto-detected — no extra config. Set the env vars below in the Vercel
-project settings. **The deployment's network policy must allow outbound requests
-to `api.coingecko.com`** for live prices (the site degrades gracefully without).
+Open `http://localhost:3000`. No environment variables are required for the
+premiere homepage. `NEXT_PUBLIC_SITE_URL` defaults to `https://twic.tv`; if you
+set it in `.env.local` or Vercel, use the intended canonical URL.
 
-## Environment variables
+For a production build:
 
-| Variable                      | Purpose                                                        |
-| ----------------------------- | -------------------------------------------------------------- |
-| `NEXT_PUBLIC_BEEHIIV_URL`     | Beehiiv embed iframe URL. Unset → styled placeholder form.     |
-| `NEXT_PUBLIC_SPONSOR_EMAIL`   | `mailto:` target for the "Become a sponsor" button.            |
-| `NEXT_PUBLIC_SITE_URL`        | Canonical URL for metadata / sitemap.                          |
+```bash
+npm run build
+npm run start
+```
 
-## Editing content (no CMS, no database)
+The Editorial Overprint implementation was checked with `npm ci` and
+`npm run build`. Its production dependency audit returned **0 vulnerabilities**
+on November 26, 2026. Recheck the lockfile when dependencies change:
 
-All content lives in typed config files under `src/data/`:
+```bash
+npm audit --omit=dev
+```
 
-- **`episodes.ts`** — add an episode by prepending an object. The first entry
-  drives the homepage hero. Each needs `{ number, title, date, youtubeId, description, guests? }`.
-- **`portfolio.ts`** — add a position by appending an object. Set `assetType`
-  to `"crypto"` (priced via CoinGecko by `coingeckoId`) or `"stock"` (priced via
-  Yahoo Finance by `yahooSymbol`, e.g. `"TTWO"`). You set `entryDate`,
-  `entryPrice`, and `allocationUsd`; current price + 24h change are live.
-- **`sponsors.ts`** — sponsor grid + the stat strip.
-- **`site.ts`** — wordmark, tagline, social links, the endorsement quote.
+Build and dependency checks do not replace desktop, mobile, and keyboard review
+of a deployment preview.
 
-## How prices work
+## Update the homepage
 
-`src/lib/prices.ts` fetches everything **server-side**, cached 60 seconds via
-Next.js fetch revalidation. Never called from the client, no API keys.
+Edit **`src/data/site.ts`**:
 
-- **Crypto** — one batched CoinGecko call for all crypto positions.
-- **Stocks** — one keyless Yahoo Finance chart call per symbol, run in parallel.
+| Configuration | What it controls |
+| --- | --- |
+| `PREMIERE.youtubeId` | Video, YouTube poster, and direct watch link. Use the video ID, not its full URL. |
+| `PREMIERE.title` | Visible episode title and player accessibility label. |
+| `PREMIERE.standfirst` | Description alongside the video. |
+| `PREMIERE.kicker`, `season`, `airDate` | Premiere label, season label, and availability text. |
+| `LUMA_URL` | All episode-reminder buttons and the Luma footer link. |
+| `SITE` | Site identity and shared metadata; `SITE.url` supplies the canonical base URL. |
+| `SOCIALS.x` | The homepage's TWIC on X footer link. |
 
-Both feeds merge into a single map keyed by `priceKey()` (`crypto:<id>` /
-`stock:<symbol>`). If a feed fails, those positions render entry data and the
-page shows a "live prices temporarily unavailable" banner — never NaN, never a
-fake `$0.00`. The exact P&L formulas live in `src/lib/portfolio.ts`.
+Homepage editorial copy and layout live in `src/app/page.tsx`; styling lives in
+`src/app/page.module.css`. See [the Editorial Overprint guide](docs/editorial-overprint.md)
+for assets, typography, and release checks.
 
-> Deployment note: the hosting network policy must allow outbound requests to
-> both `api.coingecko.com` and `query1.finance.yahoo.com` for live prices.
+## Launch mode and future modules
+
+**This is currently a single premiere page.** Temporary redirects in
+`next.config.mjs` send `/episodes`, `/portfolio`, `/all`, `/sponsors`, `/about`,
+and their nested routes back to `/`. The existing multi-page modules are retained
+as hidden scaffolding; some contain explicit placeholder data or destinations.
+
+| File | Retained module |
+| --- | --- |
+| `src/data/episodes.ts` | Future episode archive. It does **not** drive the launch homepage. |
+| `src/data/portfolio.ts` | Portfolio positions, entry prices, and allocations. |
+| `src/data/sponsors.ts` | Sponsor cards and statistics. |
+| `src/data/all.ts`, `src/data/utilities.ts` | `$ALL` economy content and utilities. |
+
+Before exposing a module, replace its placeholders, verify its destinations and
+claims, and then remove the corresponding redirects. Do not enable the complete
+route list solely to change the homepage design.
+
+The retained portfolio pricing code in `src/lib/prices.ts` fetches CoinGecko and
+Yahoo Finance data server-side with 60-second revalidation. If that module is
+enabled, allow outbound requests to `api.coingecko.com` and
+`query1.finance.yahoo.com`. Failed feeds fall back to entry data with an
+unavailability notice; P&L calculations live in `src/lib/portfolio.ts`.
+
+Newsletter, sponsor-contact, and `$ALL` environment variables in `.env.example`
+belong to those future modules. They are not needed for the current homepage.
+
+## Deployment
+
+Use the existing GitHub-to-Vercel workflow. Review the branch preview and confirm
+the production canonical URL before promoting a change to `twic.tv`.
