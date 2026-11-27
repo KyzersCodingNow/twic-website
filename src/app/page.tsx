@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
 import Image from "next/image";
 import { SITE, PREMIERE, LUMA_URL, SOCIALS } from "@/data/site";
-import { AUDIENCE_REACTIONS, CONTACT_EMAIL, HOST_PROFILE_URL, PUBLIC_RECORD, SELECTED_WORK } from "@/data/homepage";
+import { AUDIENCE_REACTIONS, CONTACT_EMAIL, CREATOR_MUSIC_URL, EQUIPMENT_URL, HOST_PROFILE_URL, NEWS_TOOLING, PUBLIC_RECORD, SELECTED_WORK, SPONSORSHIP, STUDIO_CAPABILITIES } from "@/data/homepage";
 import { PremierePlayer } from "@/components/PremierePlayer";
 import { SignalMark } from "@/components/SignalMark";
 import { EditorialOverprint } from "@/components/EditorialOverprint";
@@ -36,7 +36,7 @@ export default function Home() {
             <Image src="/brand/twic-lockup-paper.svg" alt="This Week in Crypto" width={633} height={155} priority />
           </a>
           <div className={styles.navLinks}>
-            <a href="#watch">Watch</a><a href="#host">Your host</a><a href="#record">On the record</a><a href="#contact">Contact</a>
+            <a href="#watch">Watch</a><a href="#record">The record</a><a href="#production">The craft</a><a href="#contact">Contact</a>
           </div>
           <a className={styles.headerCta} href={LUMA_URL} target="_blank" rel="noopener noreferrer">Get notified</a>
         </nav>
@@ -50,10 +50,10 @@ export default function Home() {
               <h1 id="show-headline" className={styles.heroTitle}>
                 <span>Inside <br />the story.</span><span>In on <br />the joke.</span>
               </h1>
-              <p className={styles.heroDescription}>The people, the ideas, and the absurdity.<br className={styles.desktopBreak} /> Crypto, with context and a sense of humor.</p>
+              <p className={styles.heroDescription}>Crypto news, conversations, and satire—shaped by firsthand industry experience and a background in music and production.</p>
               <div className={styles.hostByline}>
                 <SignalMark className={styles.smallMark} />
-                <p>Created &amp; hosted by <strong>Kevin Ricoy</strong><span>Austin, Texas</span></p>
+                <p>Created, hosted &amp; produced by <strong>Kevin Ricoy</strong><span>Austin, Texas</span></p>
               </div>
             </div>
             <div className={styles.heroFeature} id="watch">
@@ -66,6 +66,7 @@ export default function Home() {
                 <a className={styles.textLink} href={`https://www.youtube.com/watch?v=${PREMIERE.youtubeId}`} target="_blank" rel="noopener noreferrer">Watch on YouTube</a>
               </div>
               <a className={styles.exploreLink} href="#selected">More from the show</a>
+              <p className={styles.sponsorLine}><span>Anchor sponsor</span><strong>{SPONSORSHIP.name}</strong></p>
             </div>
           </div>
         </section>
@@ -95,43 +96,15 @@ export default function Home() {
           </div>
         </section>
 
-        <section className={styles.audience} aria-labelledby="audience-title">
-          <div className={styles.container}>
-            <h2 id="audience-title" className={styles.eyebrow}>From the first season · Audience reactions, 2024</h2>
-            <div className={styles.quoteGrid}>
-              {AUDIENCE_REACTIONS.map((reaction) => (
-                <figure className={styles.quote} key={reaction.name}>
-                  <blockquote>“{reaction.quote}”</blockquote>
-                  <figcaption><strong>{reaction.name}</strong><span>On X · <time dateTime={reaction.dateTime}>{reaction.date}</time></span></figcaption>
-                </figure>
-              ))}
-            </div>
-          </div>
-        </section>
-
-        <section id="host" className={`${styles.container} ${styles.host}`} aria-labelledby="host-title">
-          <div className={styles.hostPortrait}>
-            <div className={styles.portraitImage}>
-              <Image src="/show/kevin-ricoy-on-air.jpg" alt="Kevin Ricoy presenting This Week in Crypto at the microphone" fill unoptimized sizes="(max-width: 760px) calc(100vw - 40px), 42vw" />
-            </div>
-            <div className={styles.portraitCaption}><span>Kevin Ricoy</span><SignalMark className={styles.portraitMark} /></div>
-            <p className={styles.photoCredit}>On air, from the original TWIC series.</p>
-          </div>
-          <div className={styles.hostCopy}>
-            <p className={styles.eyebrow}>Meet your host</p>
-            <h2 id="host-title" className={styles.hostTitle}>A little context<br />goes a long way.</h2>
-            <p className={styles.hostIntro}>Kevin Ricoy came to crypto as a builder—creating a music app with Kin before working in communications and community roles at Kik, the Kin Foundation, and the Solana Foundation.</p>
-            <p>TWIC brings that experience to the news and the people behind it. Enough context to ask a better question. Enough perspective to see the funny side.</p>
-            <a href={HOST_PROFILE_URL} className={styles.textLink} target="_blank" rel="noopener noreferrer">The story behind TWIC, in Blockworks</a>
-          </div>
-        </section>
-
         <section id="record" className={styles.record} aria-labelledby="record-title">
           <div className={`${styles.container} ${styles.recordInner}`}>
-            <div className={styles.recordHeading}>
-              <p className={styles.eyebrow}>The perspective behind the program</p>
-              <h2 id="record-title" className={styles.sectionTitle}>Off-air.<br />On the record.</h2>
-              <p>A few pieces of the story behind the show, in Kevin’s writing and independent coverage.</p>
+            <div className={styles.recordIntro} id="host">
+              <p className={styles.eyebrow}>The host &amp; the history</p>
+              <h2 id="record-title" className={styles.sectionTitle}>The record behind the perspective.</h2>
+              <p className={styles.hostName}>Kevin Ricoy <span>Creator &amp; host</span></p>
+              <p>Kevin came to crypto as a builder, creating a music app with Kin before working in communications and community roles at Kik, the Kin Foundation, and the Solana Foundation.</p>
+              <p>That experience gives the show its context. His writing and the coverage of his work make the perspective behind it something you can explore for yourself.</p>
+              <a href={HOST_PROFILE_URL} className={styles.textLink} target="_blank" rel="noopener noreferrer">Read the Blockworks profile</a>
             </div>
             <div className={styles.recordList}>
               {PUBLIC_RECORD.map((item) => (
@@ -141,6 +114,53 @@ export default function Home() {
                     <h3>{item.title}</h3><p>{item.description}</p><span className={styles.recordAction}>{item.action}</span>
                   </a>
                 </article>
+              ))}
+            </div>
+          </div>
+          <aside id="sponsorship" className={`${styles.container} ${styles.recordDisclosure}`} aria-label="Sponsorship disclosure">
+            <p>Current sponsorship</p><p>{SPONSORSHIP.disclosure}</p>
+          </aside>
+        </section>
+
+        <section id="production" className={styles.production} aria-labelledby="production-title">
+          <div className={styles.container}>
+            <div className={styles.productionHeading}>
+              <div><p className={styles.eyebrow}>The work behind the show</p><h2 id="production-title" className={styles.sectionTitle}>Behind the<br />broadcast.</h2></div>
+              <p>Kevin’s work spans audio engineering, videography, music, and show production. That hands-on range shapes the sound, the frame, and the performance.</p>
+            </div>
+            <div className={styles.productionGrid}>
+              <figure className={styles.productionStill}>
+                <div className={styles.productionImage}>
+                  <Image src="/show/kevin-ricoy-at-the-desk.jpg" alt="Kevin Ricoy presenting the original TWIC series, with his microphone and purple studio lighting in frame" fill unoptimized sizes="(max-width: 700px) calc(100vw - 40px), (max-width: 1476px) 45vw, 624px" />
+                </div>
+                <figcaption><span>From the original TWIC series.</span><SignalMark className={styles.productionMark} /></figcaption>
+              </figure>
+              <div className={styles.capabilities}>
+                {STUDIO_CAPABILITIES.map((capability) => (
+                  <div className={styles.capability} key={capability.title}>
+                    <h3>{capability.title}</h3><p>{capability.description}</p>
+                    {capability.tools && <p className={styles.studioTools}><span>Selected studio tools</span>{capability.tools}</p>}
+                  </div>
+                ))}
+                <div className={styles.productionLinks}>
+                  <a className={styles.textLink} href={CREATOR_MUSIC_URL} target="_blank" rel="noopener noreferrer">Kevin’s music on SoundCloud</a>
+                  <a className={styles.textLink} href={EQUIPMENT_URL} target="_blank" rel="noopener noreferrer">Explore the studio equipment</a>
+                </div>
+              </div>
+            </div>
+            <div className={styles.newsTooling}><p className={styles.eyebrow}>News tooling</p><p>{NEWS_TOOLING}</p></div>
+          </div>
+        </section>
+
+        <section className={styles.audience} aria-labelledby="audience-title">
+          <div className={styles.container}>
+            <h2 id="audience-title" className={styles.eyebrow}>From the first season · Audience reactions, 2024</h2>
+            <div className={styles.quoteGrid}>
+              {AUDIENCE_REACTIONS.map((reaction) => (
+                <figure className={styles.quote} key={reaction.name}>
+                  <blockquote>“{reaction.quote}”</blockquote>
+                  <figcaption><strong>{reaction.name}</strong><span>On X · <time dateTime={reaction.dateTime}>{reaction.date}</time></span></figcaption>
+                </figure>
               ))}
             </div>
           </div>

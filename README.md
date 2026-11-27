@@ -54,7 +54,8 @@ Edit **`src/data/site.ts`**:
 | `SOCIALS.x` | The homepage's TWIC on X footer link. |
 
 Edit **`src/data/homepage.ts`** for selected work, measured runtime labels, dated
-audience reactions, public-record links, and the public contact email. The local
+audience reactions, public-record links, studio capabilities, sponsorship,
+news-tooling copy, and the public contact email. The local
 featured poster is passed to the player in `src/app/page.tsx`; update it together
 with the episode ID. `PREMIERE.season` and `standfirst` remain in the configuration
 but are not displayed in the current layout.

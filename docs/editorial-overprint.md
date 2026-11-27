@@ -9,18 +9,22 @@ visual system.
 
 The current homepage contains:
 
-1. A compact masthead and split hero: show positioning beside the premiere.
+1. A compact masthead and split hero: show positioning beside the premiere,
+   with a visible anchor-sponsor credit.
 2. One supporting overprint art band.
 3. Three selected-work cards linked to the supplied public X posts.
-4. Two dated personal audience reactions from the original season.
-5. Kevin's on-air portrait, short biography, and Blockworks profile link.
-6. Three public-record links, distinguishing personal writing from reporting.
+4. A combined host biography and dated public record, followed by a current
+   sponsorship disclosure.
+5. A production section with genuine on-air imagery, specific capabilities,
+   selected studio tools, music and equipment links, and a brief news-bot note.
+6. Two dated personal audience reactions from the original season.
 7. A Luma reminder invitation.
 8. Separate guest/story and partnership email paths, followed by the footer.
 
-Primary navigation uses `#watch`, `#host`, `#record`, and `#contact`. The hero's
-secondary link reaches `#selected`. These are sections on the homepage, not new
-public routes.
+Primary navigation uses `#watch`, `#record`, `#production`, and `#contact`.
+The previous `#host` destination remains on the host introduction. The hero's
+secondary link reaches `#selected`; `#sponsorship` identifies the disclosure.
+These are sections on the homepage, not new public routes.
 
 The player initially displays the local premiere poster. Activation loads a
 `youtube-nocookie.com` iframe and transfers keyboard focus into it. A direct
@@ -32,7 +36,7 @@ fall back to YouTube's `hqdefault.jpg`.
 | --- | --- |
 | `src/app/page.tsx` | Homepage content, section structure, and page metadata. |
 | `src/app/page.module.css` | Homepage composition and responsive styling. |
-| `src/data/homepage.ts` | Selected work, measured runtime labels, dated reactions, public-record links, and contact details. |
+| `src/data/homepage.ts` | Selected work, runtime labels, reactions, record links, studio capabilities, sponsorship, news-tooling copy, and contact details. |
 | `src/data/site.ts` | Shared identity, premiere configuration, Luma destination, and social links. |
 | `src/components/PremierePlayer.tsx` | Poster fallback, player activation, and focus handling. |
 | `src/components/PremierePlayer.module.css` | Player presentation. |
@@ -76,6 +80,18 @@ review both files when changing the show name or positioning.
 These are `mailto:` links with different subject lines, not a submitted form.
 `AUDIENCE_REACTIONS` preserves the supplied quotation text and historical dates;
 do not convert those comments into current institutional endorsements.
+
+`SPONSORSHIP` supplies the premiere credit and the current-sponsorship disclosure.
+It states the confirmed relationship without representing any editorial rights
+or contractual terms. `STUDIO_CAPABILITIES` and the music/equipment destinations
+describe Kevin's stated practice and supplied studio inventory. `NEWS_TOOLING`
+states only that TWIC operates a news bot on X. Add a bot link or performance
+example only when its account and supporting records are available.
+
+The production image is a frame from the original show, as its caption states.
+It is not a behind-the-scenes photograph or proof of which camera or audio chain
+was used for that episode. The selected studio tools describe the supplied
+inventory separately from the image.
 
 ## Brand assets
 
@@ -191,3 +207,30 @@ Final captures: [desktop](previews/homepage-desktop.jpg) ·
   constitute testing on a physical ultrawide monitor or in every browser.
 
 [5120px frame — banner capture](previews/banner-ultrawide-5120.jpg).
+
+## Review record — public record and production, November 27, 2026
+
+- The production build and type checking passed, with all 15 static outputs.
+  Reported homepage first-load JavaScript remains 110 kB. No dependencies or
+  client components were added.
+- Desktop visual review covered the opening, combined host/public-record block,
+  visible sponsorship disclosure, and new production section. The Record and
+  Craft navigation links reached the intended sections; all local anchor targets
+  exist.
+- Narrow-frame visual review covered the 320px record layout and the 320px and
+  390px production content. Text and links remained readable without overlap.
+- DOM layout checks at 320px, 390px, 820px, 3440px, and 5120px found no horizontal
+  overflow and no broken images. These are width checks, not a claim of a complete
+  visual review at every size. The existing native vector banner is unchanged.
+- The production still is a genuine original-series frame, captioned as such.
+  It is not presented as behind-the-scenes footage or evidence of which listed
+  equipment was used to record that episode.
+- The unchanged YouTube player was not retested in this pass. Earlier playback
+  limitations still apply. SoundCloud and equipment destinations are supplied
+  public URLs; their current playback and contents were not verified here.
+- Browser checks used a managed local copy of the production build. The Vercel
+  branch preview retains its existing sign-in protection.
+
+Current viewport captures: [public record](previews/homepage-record.jpg) ·
+[production](previews/homepage-production.jpg). Earlier full-page captures remain
+historical and do not show this revision.
