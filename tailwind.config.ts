@@ -1,7 +1,6 @@
 import type { Config } from "tailwindcss";
 
-// TWIC Brand System v1 — three colors, no exceptions. Flat fills only:
-// no gradients, shadows, bevels, outlines, glows, or textures.
+// Editorial Overprint palette; legacy aliases keep staged routes compatible.
 const config: Config = {
   content: [
     "./src/app/**/*.{ts,tsx}",
@@ -11,22 +10,21 @@ const config: Config = {
     extend: {
       colors: {
         // The three brand colors.
-        yellow: "#FFD400", // TWIC yellow — primary accent
-        ink: "#0F0F0F", // near-black ground
-        white: "#FFFFFF",
+        yellow: "#E8E655", // citron
+        ink: "#151515", // carbon
+        white: "#F0EFE9", // paper
         // Supporting greys from the deck (borders, muted data).
         line: "#2A2A2A",
         muted: "#8A8A8A",
         // Legacy tokens kept so hidden pages still compile.
         panel: "#1A1A1A",
-        gold: "#FFD400",
-        bone: "#FFFFFF",
+        gold: "#E8E655",
+        bone: "#F0EFE9",
         gain: "#22C55E",
         loss: "#EF4444",
       },
       fontFamily: {
-        // Headlines: Anton, all-caps.
-        head: ["var(--font-anton)", "Impact", "sans-serif"],
+        head: ["var(--font-archivo)", "sans-serif"],
         // Marks & UI + body: Archivo.
         display: ["var(--font-archivo)", "system-ui", "sans-serif"],
         sans: ["var(--font-archivo)", "system-ui", "sans-serif"],

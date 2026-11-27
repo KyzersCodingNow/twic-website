@@ -1,6 +1,1 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" width="64" height="64">
-  <rect width="64" height="64" fill="#0A0A0A"/>
-  <text x="50%" y="50%" dy="0.02em" text-anchor="middle" dominant-baseline="central"
-        font-family="Archivo, Arial Black, sans-serif" font-weight="900" font-size="30"
-        letter-spacing="-1.5" fill="#F5F2EA">TW<tspan fill="#C9A84C">C</tspan></text>
-</svg>
+<svg xmlns="http://www.w3.org/2000/svg" width="512" height="512" viewBox="0 0 512 512"><title>TWIC circle-safe profile logo</title><desc>TWIC season identity. Outlined vector lettering and original refined Signal geometry. sRGB colour.</desc><rect x="0" y="0" width="512" height="512" fill="#E8E655" opacity="1"/><g opacity="1" transform="translate(100 126) scale(2.0)"><g xmlns="http://www.w3.org/2000/svg" fill="#151515"><path d="M0 0H78V26H26V104H0Z" /><path d="M52 52H104V26H156V52H130V78H78V104H52Z" /><path d="M130 78H156V130H104V104H130Z" /><rect x="0" y="114" width="16" height="16" /></g></g></svg>

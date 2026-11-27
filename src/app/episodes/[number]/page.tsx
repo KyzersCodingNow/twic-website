@@ -7,7 +7,7 @@ import { EmailCapture } from "@/components/EmailCapture";
 import { formatDate } from "@/lib/format";
 
 interface PageProps {
-  params: { number: string };
+  params: Promise<{ number: string }>;
 }
 
 // Pre-render every episode at build time.
@@ -15,8 +15,9 @@ export function generateStaticParams() {
   return episodes.map((e) => ({ number: String(e.number) }));
 }
 
-export function generateMetadata({ params }: PageProps): Metadata {
-  const ep = getEpisode(Number(params.number));
+export async function generateMetadata({ params }: PageProps): Promise<Metadata> {
+  const { number } = await params;
+  const ep = getEpisode(Number(number));
   if (!ep) return { title: "Episode not found" };
   return {
     title: `Ep ${ep.number}: ${ep.title}`,
@@ -30,8 +31,9 @@ export function generateMetadata({ params }: PageProps): Metadata {
   };
 }
 
-export default function EpisodeDetailPage({ params }: PageProps) {
-  const number = Number(params.number);
+export default async function EpisodeDetailPage({ params }: PageProps) {
+  const { number: episodeNumber } = await params;
+  const number = Number(episodeNumber);
   if (!Number.isInteger(number)) notFound();
   const ep = getEpisode(number);
   if (!ep) notFound();
